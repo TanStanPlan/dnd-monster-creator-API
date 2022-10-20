@@ -1,4 +1,9 @@
 package com.revature.dndmonstercreator.monsterdetail;
 
-public interface MonsterDetailRepository {
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface MonsterDetailRepository extends CrudRepository<MonsterDetail, Integer> {
+
 }
