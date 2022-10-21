@@ -1,5 +1,6 @@
 package com.revature.dndmonstercreator.user;
 
+import com.revature.dndmonstercreator.user.dto.requests.NewUserRegistrationRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,4 +25,11 @@ public class User {
     private String username;
 
     private String password;
+
+    public User(NewUserRegistrationRequest registrationRequest) {
+        this.email = registrationRequest.getEmail();
+        this.username = registrationRequest.getUsername();
+        this.password = registrationRequest.getPassword();
+    }
+
 }

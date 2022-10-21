@@ -1,5 +1,6 @@
 package com.revature.dndmonstercreator.monsterdetail;
 
+import com.revature.dndmonstercreator.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "monster_detail")
+@Table(name = "monster_details")
 public class MonsterDetail {
 
     @Id
@@ -47,10 +48,8 @@ public class MonsterDetail {
 
     private int charisma;
 
-
-
-
-
-
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId;
 
 }
