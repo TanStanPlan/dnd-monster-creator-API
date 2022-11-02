@@ -9,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -24,17 +27,12 @@ public class UserService {
     }
 
     @Transactional
-    public User save(User user){
-        return userRepository.save(user);
-    }
-
-    @Transactional
     public Optional<User> findByEmail(String email){
         return userRepository.findByEmail(email);
     }
 
     @Transactional
-    public UserResponse register(NewUserRegistrationRequest registrationRequest) throws InvalidUserInputException{
+    public UserResponse registerUser(NewUserRegistrationRequest registrationRequest) throws InvalidUserInputException{
         User newUser = new User(registrationRequest);
         isEmailAvailable(newUser.getEmail());
         isUsernameAvailable(newUser.getUsername());
@@ -58,8 +56,8 @@ public class UserService {
     }
 
     @Transactional
-    public void update(UpdateUserRequest updateUserRequest, User currentUser) throws InvalidUserInputException{
-        User foundUser = userRepository.findById(currentUser.getId()).orElseThrow(ResourceNotFoundException::new);
+    public void update(UpdateUserRequest updateUserRequest, int userId) throws InvalidUserInputException{
+        User foundUser = userRepository.findById(userId).orElseThrow(ResourceNotFoundException::new);
         Predicate<String> notNullorEmpty = (str) -> str != null && !str.trim().equals("");
 
         if(notNullorEmpty.test(updateUserRequest.getEmail())){
@@ -73,4 +71,22 @@ public class UserService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public List<UserResponse> readAllUsers(){
+        return ((Collection<User>)userRepository.findAll())
+                .stream().map(UserResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public UserResponse findById(int id) {
+        User user = userRepository.findById(id).orElseThrow(InvalidUserInputException::new);
+        UserResponse userResponse = new UserResponse(user);
+        return userResponse;
+    }
+
+    @Transactional
+    public void deleteUser(int id){
+        userRepository.deleteById(id);
+    }
 }

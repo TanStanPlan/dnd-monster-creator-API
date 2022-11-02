@@ -32,4 +32,9 @@ public class User {
         this.password = registrationRequest.getPassword();
     }
 
+    public User(int id, String email){
+        this.id = id;
+        this.email = email;
+    }
+
 }
