@@ -3,6 +3,7 @@ package com.revature.dndmonstercreator.user;
 import com.revature.dndmonstercreator.user.dto.requests.NewUserRegistrationRequest;
 import com.revature.dndmonstercreator.user.dto.requests.UpdateUserRequest;
 import com.revature.dndmonstercreator.user.dto.responses.UserResponse;
+import com.revature.dndmonstercreator.util.web.jwtutils.TokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +17,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final TokenManager tokenManager;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, TokenManager tokenManager) {
         this.userService = userService;
+        this.tokenManager = tokenManager;
     }
 
 
@@ -41,14 +44,14 @@ public class UserController {
 
     @PutMapping
     public String update(@RequestBody UpdateUserRequest updateUserRequest, @RequestHeader(name = "Authorization") String token){
-        userService.update(updateUserRequest, tokenManager);
+        userService.update(updateUserRequest, tokenManager.getUserId(token));
         return "The User has been successfully updated";
     }
 
     @DeleteMapping
     public String delete(@RequestParam int id){
         userService.deleteUser(id);
-        return "The User has been successfully deleted!";
+        return "The User with " + id + " has been successfully deleted!";
     }
 
 

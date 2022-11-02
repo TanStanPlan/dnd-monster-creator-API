@@ -5,6 +5,7 @@ import com.revature.dndmonstercreator.user.dto.requests.UpdateUserRequest;
 import com.revature.dndmonstercreator.user.dto.responses.UserResponse;
 import com.revature.dndmonstercreator.util.exceptions.InvalidUserInputException;
 import com.revature.dndmonstercreator.util.exceptions.ResourceNotFoundException;
+import com.revature.dndmonstercreator.util.exceptions.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,13 @@ public class UserService {
         isEmailAvailable(newUser.getEmail());
         isUsernameAvailable(newUser.getUsername());
         return new UserResponse(userRepository.save(newUser));
+    }
+
+    @Transactional
+    public User login(String email, String password) throws UnauthorizedException{
+        User user = userRepository.loginCredentialCheck(email, password).orElseThrow(ResourceNotFoundException::new);
+        return user;
+
     }
 
     @Transactional(readOnly = true)
