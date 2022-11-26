@@ -1,5 +1,6 @@
 package com.revature.dndmonstercreator.monsterdetail;
 
+import com.revature.dndmonstercreator.monsterdetail.dto.requests.NewMonsterDetailCreationRequest;
 import com.revature.dndmonstercreator.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -51,5 +52,22 @@ public class MonsterDetail {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User userId;
+
+    public MonsterDetail(NewMonsterDetailCreationRequest newMonsterDetailCreationRequest) {
+        this.name = newMonsterDetailCreationRequest.getName();
+        this.armorClass = newMonsterDetailCreationRequest.getArmorClass();
+        this.hitPoints = newMonsterDetailCreationRequest.getHitPoints();
+        this.speed = newMonsterDetailCreationRequest.getSpeed();
+        this.size = newMonsterDetailCreationRequest.getSize();
+        this.alignment = newMonsterDetailCreationRequest.getAlignment();
+        this.challengeRating = newMonsterDetailCreationRequest.getChallengeRating();
+        this.strength = newMonsterDetailCreationRequest.getStrength();
+        this.dexterity = newMonsterDetailCreationRequest.getDexterity();
+        this.constitution = newMonsterDetailCreationRequest.getConstitution();
+        this.intelligence = newMonsterDetailCreationRequest.getIntelligence();
+        this.wisdom = newMonsterDetailCreationRequest.getWisdom();
+        this.charisma = newMonsterDetailCreationRequest.getCharisma();
+    }
+
 
 }
