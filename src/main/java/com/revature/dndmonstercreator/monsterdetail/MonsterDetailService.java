@@ -10,13 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 public class MonsterDetailService {
 
-    private MonsterDetailRepository monsterDetailRepository;
+    private final MonsterDetailRepository monsterDetailRepository;
 
     @Autowired
     public MonsterDetailService(MonsterDetailRepository monsterDetailRepository) {
@@ -81,6 +84,16 @@ public class MonsterDetailService {
     @Transactional
     public Optional<MonsterDetail> findByUser(int id) { return monsterDetailRepository.findByUser(id);}
 
+    @Transactional(readOnly = true)
+    public List<MonsterDetailResponse> findAllMonsterDetails(){
+        return ((Collection<MonsterDetail>) monsterDetailRepository.findAll())
+                .stream().map(MonsterDetailResponse::new)
+                .collect(Collectors.toList());
+    }
 
+    @Transactional
+    public void delete(int id){
+        monsterDetailRepository.deleteById(id);
+    }
 
 }

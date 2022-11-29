@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface MonsterDetailRepository extends CrudRepository<MonsterDetail, Integer> {
 
-    @Query(value = "SELECT MonsterDetail WHERE user_id= :user_id")
-    Optional<MonsterDetail> findByUser(int user_id);
+    @Query(value = "FROM MonsterDetail WHERE user_id= :userId")
+    Optional<MonsterDetail> findByUser(int userId);
 
 }
